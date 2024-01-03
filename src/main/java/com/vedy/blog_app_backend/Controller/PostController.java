@@ -1,6 +1,7 @@
 package com.vedy.blog_app_backend.Controller;
 
 
+import com.vedy.blog_app_backend.Config.AppConstants;
 import com.vedy.blog_app_backend.Dto.PostDto;
 import com.vedy.blog_app_backend.Dto.PostResponse;
 import com.vedy.blog_app_backend.Exception.ApiResponse;
@@ -52,11 +53,12 @@ public class PostController {
     //The default valy=ue in request param is used to set the total value in
     @GetMapping("/all")
     public ResponseEntity<PostResponse> getAllPosts(
-            @RequestParam (value = "pageNumber",defaultValue = "0" ,required = false)Integer pageNumber,
-            @RequestParam(value = "pageSize",defaultValue = "2" ,required = false) Integer pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "postId",required = false) String sortBy ,
-            @RequestParam(value = "sortDir",defaultValue = "asc" ,required = false) String sortDir)
+            @RequestParam (value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false)Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE ,required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY,required = false) String sortBy ,
+            @RequestParam(value = "sortDir",defaultValue = AppConstants.SORT_DIRECTION ,required = false) String sortDir)
     {
+        //Here we get Default value as constants so we add it to config file and access values from there.
         PostResponse posts = this.postService.getAllPosts(pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<>(posts,HttpStatus.OK);
     }
@@ -81,6 +83,13 @@ public class PostController {
 
 
         return new ResponseEntity<>(postDto1,HttpStatus.OK);
+    }
+
+    //Search By Title
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<List<PostDto>> searchPosts(@PathVariable String keyword){
+        List<PostDto> postDtos = this.postService.searchPosts(keyword);
+        return new ResponseEntity<>(postDtos,HttpStatus.OK);
     }
 
 }

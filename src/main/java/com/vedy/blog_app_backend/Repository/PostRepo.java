@@ -10,4 +10,10 @@ import java.util.List;
 public interface PostRepo extends JpaRepository<Post,Integer> {
     List<Post> findByLocalUser(LocalUser user);
     List<Post> findByCategory(Category category);
+
+    List<Post> findPostByTitleContains(String keyword);
+
+//    if we want to write custom queries we can see video 26 of blog Application backend Code with Durgesh
+    // Youtube Link : https://youtu.be/bUQnCfK67fw?si=nYqAzBZ_F9_IUb6y
+
 }
